@@ -4,7 +4,8 @@ What I did | Zach:
 - Used Console.Clear so each time the menu shows, the screen is cleared.
 - For now, login only works with the "admin" account: username `admin` and password `admin`.
 -Added a csproj file so that the program would actually run because without it it wasn't running before (at least on my computer idk)
-What i did | Ethan:
+
+What I did | Ethan:
 - helped in creation of the landing/home page in collaboartion with zach
 - Created the do-while loop for the main menu navigation.
 - Created the RegisterScreen() method.
