@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace ShoppingApp_Final
 {
@@ -9,6 +9,7 @@ namespace ShoppingApp_Final
         static string[] fullName = new string[10]; // Array to store full names, can be expanded as needed
 
         static int userCount = 0; // Tracks amount of registered users
+        static int loggedInUserIndex = -1; // Index of logged-in user in the arrays (-1 = not logged in)
 
         static void Main(string[] args)
         {
@@ -60,32 +61,65 @@ namespace ShoppingApp_Final
 
         }//end of main method
 
+        static int FindRegisteredUser(string username, string password)
+        {
+            for (int i = 0; i < userCount; i++)
+            {
+                if (userName[i] == username && userPassword[i] == password)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        static bool IsUsernameTaken(string username)
+        {
+            for (int i = 0; i < userCount; i++)
+            {
+                if (userName[i] == username)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         static bool UserLogin()
         {
             Console.Clear();
 
             Console.WriteLine("======== User Login ========");
 
-            Console.Write("Username: ");
-            string username = Console.ReadLine();
-
-            Console.Write("Password: ");
-            string password = Console.ReadLine();
-
-            // Search arrays for matching account
-            for (int i = 0; i < userCount; i++)
+            if (userCount == 0)
             {
-                if (userName[i] == username &&
-                    userPassword[i] == password)
-                {
-                    Console.WriteLine("Login successful.");
-                    Console.WriteLine($"Welcome {fullName[i]}");
-
-                    Console.ReadKey();
-                    return true;
-                }
+                Console.WriteLine("No accounts registered yet. Please register first (option 3). Press enter to return to the main menu.");
+                Console.ReadKey();
+                return false;
             }
 
+            Console.Write("Username: ");
+            string username = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
+
+            Console.Write("Password: ");
+            string password = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
+
+            int matchedIndex = FindRegisteredUser(username, password);
+
+            if (matchedIndex >= 0)
+            {
+                loggedInUserIndex = matchedIndex;
+
+                Console.WriteLine("Login successful.");
+                Console.WriteLine($"Welcome {fullName[loggedInUserIndex]} ({userName[loggedInUserIndex]})");
+
+                Console.ReadKey();
+                return true;
+            }
+
+            loggedInUserIndex = -1;
             Console.WriteLine("Invalid username or password.");
             Console.ReadKey();
 
@@ -100,13 +134,29 @@ namespace ShoppingApp_Final
             Console.WriteLine("======== Register New Account ========");
 
             Console.Write("Full Name: ");
-            string fullNameInput = Console.ReadLine();
+            string fullNameInput = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
 
             Console.Write("Username: ");
-            string username = Console.ReadLine();
+            string username = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
 
             Console.Write("Password: ");
-            string password = Console.ReadLine();
+            string password = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
+
+            if (string.IsNullOrEmpty(fullNameInput) ||
+                string.IsNullOrEmpty(username) ||
+                string.IsNullOrEmpty(password))
+            {
+                Console.WriteLine("All fields are required. Registration terminated (◣ _ ◢).");
+                Console.ReadKey();
+                return;
+            }
+
+            if (IsUsernameTaken(username))
+            {
+                Console.WriteLine("That username is already taken. Please choose another.");
+                Console.ReadKey();
+                return;
+            }
 
             fullName[userCount] = fullNameInput;
             userName[userCount] = username;
