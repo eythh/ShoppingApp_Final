@@ -23,7 +23,7 @@ namespace ShoppingApp_Final
                 switch (mainChoice)
                 {
                     case 1:
-                        Console.WriteLine("User Login"); // Placeholder for user login functionality
+                        UserLogin();
                         break;
                     case 2:
                         Console.WriteLine("Admin Login"); // Placeholder for admin login functionality
@@ -33,6 +33,7 @@ namespace ShoppingApp_Final
                         break;
                     case 4:
                         Console.WriteLine("Thank you for shopping with us! Goodbye!"); // Placeholder for exit functionality
+                        Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Invalid choice. Please try again."); // Placeholder for invalid choice handling
@@ -43,5 +44,25 @@ namespace ShoppingApp_Final
 
 
         }//end of main method
+
+        static bool UserLogin()
+        {
+            Console.Clear();
+            Console.WriteLine("======== User Login ========");
+            Console.Write("Username: ");
+            string username = Console.ReadLine();
+            Console.Write("Password: ");
+            string password = Console.ReadLine();
+
+            // Temporary test account until registration and file storage exist
+            if (username == "admin" && password == "admin")
+            {
+                Console.WriteLine("Login successful.");
+                return true;
+            }
+
+            Console.WriteLine("Invalid username or password.");
+            return false;
+        }//end of UserLogin method
     }//end of program class
 }//end of system/namepsace
