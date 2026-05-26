@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ShoppingApp_Final
 {
     internal class Program
     {
-        static string[] userName = new string[10]; // Array to store user names, can be expanded as needed
-        static string[] userPassword = new string[10]; // Array to store user passwords, can be expanded as needed
-        static string[] fullName = new string[10]; // Array to store full names, can be expanded as needed
+        static List<string> userName = new List<string>(); // List to store user names
+        static List<string> userPassword = new List<string>(); // List to store user passwords
+        static List<string> fullName = new List<string>(); // List to store full names
 
         static int userCount = 0; // Tracks amount of registered users
-        static int loggedInUserIndex = -1; // Index of logged-in user in the arrays (-1 = not logged in)
+        static int loggedInUserIndex = -1; // Index of logged-in user in the lists (-1 = not logged in)
 
         static void Main(string[] args)
         {
@@ -30,7 +31,15 @@ namespace ShoppingApp_Final
 
                 Console.Write("Please enter your choice: ");
 
-                mainChoice = Convert.ToInt32(Console.ReadLine());
+                string mainChoiceInput = Console.ReadLine()?.Trim() ?? "";
+
+                if (!int.TryParse(mainChoiceInput, out mainChoice))
+                {
+                    Console.WriteLine("Invalid input. Please enter a number from 1 to 4.");
+                    Console.WriteLine("Press any key to return to the main menu...");
+                    Console.ReadKey();
+                    continue;
+                }
 
                 switch (mainChoice)
                 {
@@ -52,7 +61,9 @@ namespace ShoppingApp_Final
                         break;
 
                     default:
-                        Console.WriteLine("Invalid choice. Please try again."); // Placeholder for invalid choice handling
+                        Console.WriteLine("Invalid choice. Please enter a number from 1 to 4.");
+                        Console.WriteLine("Press any key to return to the main menu...");
+                        Console.ReadKey();
                         break;
 
                 }//end of switch statement
@@ -158,9 +169,9 @@ namespace ShoppingApp_Final
                 return;
             }
 
-            fullName[userCount] = fullNameInput;
-            userName[userCount] = username;
-            userPassword[userCount] = password;
+            fullName.Add(fullNameInput);
+            userName.Add(username);
+            userPassword.Add(password);
 
             userCount++;
 
