@@ -15,7 +15,7 @@ namespace ShoppingApp_Final
         static void Main(string[] args)
         {
             int mainChoice;
-           
+
             do
             {
                 Console.Clear();
@@ -36,34 +36,34 @@ namespace ShoppingApp_Final
                 if (!int.TryParse(mainChoiceInput, out mainChoice))
                 {
                     Console.WriteLine("Invalid input. Please enter a number from 1 to 4.");
-                    Console.WriteLine("Press any key to return to the main menu...");
-                    Console.ReadKey();
+                    Console.WriteLine("Press Enter to return to the main menu...");
+                    Console.ReadLine();
                     continue;
                 }
 
                 switch (mainChoice)
                 {
                     case 1:
-                        UserLogin();
+                        UserLogin(); // Calls the UserLogin method to handle user login functionality
                         break;
 
                     case 2:
-                        Console.WriteLine("Admin Login"); // Placeholder for admin login functionality
+                        AdminMenu(); // Calls the AdminMenu method to display the admin menu and handle admin functionality
                         break;
 
                     case 3:
-                        RegisterScreen();
+                        RegisterScreen(); // Calls the RegisterScreen method to display the registration screen and handle new user registration functionality
                         break;
 
                     case 4:
-                        Console.WriteLine("Thank you for shopping with us! Goodbye!"); // Placeholder for exit functionality
+                        Console.WriteLine("Thank you for shopping with us! Goodbye!"); // Displays a goodbye message to the user before exiting the application
                         Environment.Exit(0);
                         break;
 
                     default:
                         Console.WriteLine("Invalid choice. Please enter a number from 1 to 4.");
-                        Console.WriteLine("Press any key to return to the main menu...");
-                        Console.ReadKey();
+                        Console.WriteLine("Press Enter to return to the main menu...");
+                        Console.ReadLine();
                         break;
 
                 }//end of switch statement
@@ -83,7 +83,7 @@ namespace ShoppingApp_Final
             }
 
             return -1;
-        }
+        }//end of FindRegisteredUser method
 
         static bool IsUsernameTaken(string username)
         {
@@ -96,7 +96,7 @@ namespace ShoppingApp_Final
             }
 
             return false;
-        }
+        }//end of IsUsernameTaken method
 
         static bool UserLogin()
         {
@@ -106,8 +106,8 @@ namespace ShoppingApp_Final
 
             if (userCount == 0)
             {
-                Console.WriteLine("No accounts registered yet. Please register first (option 3). Press enter to return to the main menu.");
-                Console.ReadKey();
+                Console.WriteLine("No accounts registered yet. Please register first (option 3). Press Enter to return to the main menu.");
+                Console.ReadLine();
                 return false;
             }
 
@@ -126,17 +126,97 @@ namespace ShoppingApp_Final
                 Console.WriteLine("Login successful.");
                 Console.WriteLine($"Welcome {fullName[loggedInUserIndex]} ({userName[loggedInUserIndex]})");
 
-                Console.ReadKey();
+                Console.ReadLine();
                 return true;
             }
 
             loggedInUserIndex = -1;
             Console.WriteLine("Invalid username or password.");
-            Console.ReadKey();
+            Console.ReadLine();
 
             return false;
 
         }//end of UserLogin method
+
+        public static void AdminMenu()
+        {
+            int adminChoice;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("====================================");
+                Console.WriteLine("======== Welcome, Admin! ==========");
+                Console.WriteLine("====================================");
+                Console.WriteLine("============ Admin Menu ============");
+                Console.WriteLine("====================================");
+                Console.WriteLine("1. Display Products");
+                Console.WriteLine("2. Add Product");
+                Console.WriteLine("3. Update Product");
+                Console.WriteLine("4. Remove Product");
+                Console.WriteLine("5. Search Product");
+                Console.WriteLine("6. Logout");
+
+                Console.Write("Please enter your choice: ");
+
+                string adminChoiceInput = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string same as strip in python
+
+                if (!int.TryParse(adminChoiceInput, out adminChoice)) // TryParse attempts to convert the input to an integer and returns true if successful, false otherwise. The result is stored in adminChoice.
+                {
+                    Console.WriteLine("Invalid input. Please enter a number from 1 to 6.");
+                    Console.WriteLine("Press Enter to return to the Admin Menu...");
+                    Console.ReadLine();
+                    continue; // Skip the rest of the loop and start the next iteration, which will re-display the admin menu
+                }
+
+                switch (adminChoice)
+                {
+                    case 1:
+                        Console.WriteLine("Display Products screen will go here.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 2:
+                        Console.WriteLine("Add Product screen will go here.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 3:
+                        Console.WriteLine("Update Product screen will go here.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 4:
+                        Console.WriteLine("Remove Product screen will go here.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 5:
+                        Console.WriteLine("Search Product screen will go here.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 6:
+                        Console.WriteLine("Logging out and returning to the main menu...");
+                        Console.WriteLine("Press Enter to continue...");
+                        Console.ReadLine();
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please choose between 1 and 6.");
+                        Console.WriteLine("Press Enter to return to the Admin Menu...");
+                        Console.ReadLine();
+                        break;
+                }
+
+            } while (adminChoice != 6); // Continue showing the admin menu until the admin chooses to logout (option 6)
+
+        }//end of AdminMenu method
 
         public static void RegisterScreen()
         {
@@ -158,14 +238,14 @@ namespace ShoppingApp_Final
                 string.IsNullOrEmpty(password))
             {
                 Console.WriteLine("All fields are required. Registration terminated (◣ _ ◢).");
-                Console.ReadKey();
+                Console.ReadLine();
                 return;
             }
 
             if (IsUsernameTaken(username))
             {
                 Console.WriteLine("That username is already taken. Please choose another.");
-                Console.ReadKey();
+                Console.ReadLine();
                 return;
             }
 
@@ -178,9 +258,9 @@ namespace ShoppingApp_Final
             Console.Clear();
 
             Console.WriteLine("Registration successful. You can now log in with your new account.");
-            Console.WriteLine("Press any key to return to the main menu...");
+            Console.WriteLine("Press Enter to return to the main menu...");
 
-            Console.ReadKey();
+            Console.ReadLine();
 
         }//end of RegisterScreen method
 

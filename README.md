@@ -21,6 +21,19 @@ What I did | Ethan:
   - Username
   - Password
 - Added registration success messages and menu return functionality.
+- Helped test and debug the registration system during development.
+- Created the AdminMenu() method structure.
+- Added placeholders for admin menu for:
+  - Display Products
+  - Add Product
+  - Update Product
+  - Remove Product
+  - Search Product
+  - Logout
+- Added admin menu validation structure and navigation flow.
+- Helped plan the future admin authentication flow.
+- Added clear Console.WriteLine() messages to improve navigation and user understanding.
+- Worked on documenting development stages, testing, and planning decisions for the project documentation.
 
 
 ## Current Progress
@@ -31,12 +44,21 @@ What I did | Ethan:
 - Customer login validation completed
 - Main menu input validation completed
 - Registration storage updated to allow more than 10 accounts
+- Admin menu structure completed
+- Registration validation and error handling started
+- Admin menu navigation and placeholder functionality completed
+
 
 ## Features Still To Add
-- Admin login
+- Admin login verification
 - Product management
+- Product display system
 - Shopping cart
 - Search functionality
 - Checkout system
 - File storage / database storage
 - Admin product controls
+- Product stock updating
+- Customer menu
+- Product classes and OOP structure
+- Product searching and filtering
