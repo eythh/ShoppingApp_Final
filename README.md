@@ -47,18 +47,16 @@ What I did | Ethan:
 - Admin menu structure completed
 - Registration validation and error handling started
 - Admin menu navigation and placeholder functionality completed
+- Admin product display completed
+- Admin add product completed
+- Admin update product completed
+- Admin remove product completed
+- Admin search product completed
 
 
 ## Features Still To Add
 - Admin login verification
-- Product management
-- Product display system
 - Shopping cart
-- Search functionality
 - Checkout system
 - File storage / database storage
-- Admin product controls
-- Product stock updating
 - Customer menu
-- Product classes and OOP structure
-- Product searching and filtering

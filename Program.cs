@@ -3,11 +3,23 @@ using System.Collections.Generic;
 
 namespace ShoppingApp_Final
 {
+    internal class Product
+    {
+        public int ProductId { get; set; }
+        public string Name { get; set; } = "";
+        public string Category { get; set; } = "";
+        public decimal Price { get; set; }
+        public int Stock { get; set; }
+    }
+
     internal class Program
     {
         static List<string> userName = new List<string>(); // List to store user names
         static List<string> userPassword = new List<string>(); // List to store user passwords
         static List<string> fullName = new List<string>(); // List to store full names
+
+        static List<Product> products = new List<Product>(); // List to store products
+        static int nextProductId = 1; // Next ID to assign when adding a product
 
         static int userCount = 0; // Tracks amount of registered users
         static int loggedInUserIndex = -1; // Index of logged-in user in the lists (-1 = not logged in)
@@ -172,31 +184,31 @@ namespace ShoppingApp_Final
                 switch (adminChoice)
                 {
                     case 1:
-                        Console.WriteLine("Display Products screen will go here.");
+                        DisplayProducts();
                         Console.WriteLine("Press Enter to return to the Admin Menu...");
                         Console.ReadLine();
                         break;
 
                     case 2:
-                        Console.WriteLine("Add Product screen will go here.");
+                        AddProduct();
                         Console.WriteLine("Press Enter to return to the Admin Menu...");
                         Console.ReadLine();
                         break;
 
                     case 3:
-                        Console.WriteLine("Update Product screen will go here.");
+                        UpdateProduct();
                         Console.WriteLine("Press Enter to return to the Admin Menu...");
                         Console.ReadLine();
                         break;
 
                     case 4:
-                        Console.WriteLine("Remove Product screen will go here.");
+                        RemoveProduct();
                         Console.WriteLine("Press Enter to return to the Admin Menu...");
                         Console.ReadLine();
                         break;
 
                     case 5:
-                        Console.WriteLine("Search Product screen will go here.");
+                        SearchProduct();
                         Console.WriteLine("Press Enter to return to the Admin Menu...");
                         Console.ReadLine();
                         break;
@@ -263,6 +275,275 @@ namespace ShoppingApp_Final
             Console.ReadLine();
 
         }//end of RegisterScreen method
+
+        static int FindProductIndex(int productId)
+        {
+            for (int i = 0; i < products.Count; i++)
+            {
+                if (products[i].ProductId == productId)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }//end of FindProductIndex method
+
+        static void DisplayProducts()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Display Products ========");
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products in the catalog yet.");
+                return;
+            }
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                Product p = products[i];
+
+                Console.WriteLine("------------------------------");
+                Console.WriteLine($"Product ID: {p.ProductId}");
+                Console.WriteLine($"Name: {p.Name}");
+                Console.WriteLine($"Category: {p.Category}");
+                Console.WriteLine($"Price: ${p.Price}");
+                Console.WriteLine($"Stock: {p.Stock}");
+            }
+        }//end of DisplayProducts method
+
+        static void AddProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Add Product ========");
+
+            Console.Write("Product Name: ");
+            string name = Console.ReadLine()?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(name))
+            {
+                Console.WriteLine("Product name cannot be blank.");
+                return;
+            }
+
+            Console.Write("Category: ");
+            string category = Console.ReadLine()?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(category))
+            {
+                Console.WriteLine("Category cannot be blank.");
+                return;
+            }
+
+            Console.Write("Price: ");
+            string priceInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!decimal.TryParse(priceInput, out decimal price) || price <= 0)
+            {
+                Console.WriteLine("Invalid price. Please enter a number greater than 0.");
+                return;
+            }
+
+            Console.Write("Stock: ");
+            string stockInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!int.TryParse(stockInput, out int stock) || stock < 0)
+            {
+                Console.WriteLine("Invalid stock. Please enter a whole number of 0 or more.");
+                return;
+            }
+
+            Product newProduct = new Product
+            {
+                ProductId = nextProductId,
+                Name = name,
+                Category = category,
+                Price = price,
+                Stock = stock
+            };
+
+            products.Add(newProduct);
+            nextProductId++;
+
+            Console.WriteLine($"Product added successfully (ID: {newProduct.ProductId}).");
+        }//end of AddProduct method
+
+        static void UpdateProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Update Product ========");
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products to update.");
+                return;
+            }
+
+            Console.Write("Enter Product ID to update: ");
+            string idInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!int.TryParse(idInput, out int productId))
+            {
+                Console.WriteLine("Invalid product ID. Please enter a valid number.");
+                return;
+            }
+
+            int index = FindProductIndex(productId);
+
+            if (index < 0)
+            {
+                Console.WriteLine($"No product found with ID {productId}.");
+                return;
+            }
+
+            Product product = products[index];
+
+            Console.WriteLine($"Updating: {product.Name} (ID: {product.ProductId})");
+            Console.WriteLine("(Press Enter to keep the current value)");
+
+            string updatedName = product.Name;
+            string updatedCategory = product.Category;
+            decimal updatedPrice = product.Price;
+            int updatedStock = product.Stock;
+
+            Console.Write($"Name [{product.Name}]: ");
+            string nameInput = Console.ReadLine()?.Trim() ?? "";
+            if (!string.IsNullOrEmpty(nameInput))
+            {
+                updatedName = nameInput;
+            }
+
+            Console.Write($"Category [{product.Category}]: ");
+            string categoryInput = Console.ReadLine()?.Trim() ?? "";
+            if (!string.IsNullOrEmpty(categoryInput))
+            {
+                updatedCategory = categoryInput;
+            }
+
+            Console.Write($"Price [{product.Price:C}]: ");
+            string priceInput = Console.ReadLine()?.Trim() ?? "";
+            if (!string.IsNullOrEmpty(priceInput))
+            {
+                decimal priceCheck;
+
+                if (!decimal.TryParse(priceInput, out priceCheck) || priceCheck <= 0)
+                {
+                    Console.WriteLine("Invalid price. Update cancelled.");
+                    return;
+                }
+
+                updatedPrice = priceCheck;
+            }
+
+            Console.Write($"Stock [{product.Stock}]: ");
+            string stockInput = Console.ReadLine()?.Trim() ?? "";
+            if (!string.IsNullOrEmpty(stockInput))
+            {
+                int stockCheck;
+
+                if (!int.TryParse(stockInput, out stockCheck) || stockCheck < 0)
+                {
+                    Console.WriteLine("Invalid stock. Update cancelled.");
+                    return;
+                }
+
+                updatedStock = stockCheck;
+            }
+
+            product.Name = updatedName;
+            product.Category = updatedCategory;
+            product.Price = updatedPrice;
+            product.Stock = updatedStock;
+
+            Console.WriteLine($"Product ID {product.ProductId} updated successfully.");
+        }//end of UpdateProduct method
+
+        static void RemoveProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Remove Product ========");
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products to remove.");
+                return;
+            }
+
+            Console.Write("Enter Product ID to remove: ");
+            string idInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!int.TryParse(idInput, out int productId))
+            {
+                Console.WriteLine("Invalid product ID. Please enter a valid number.");
+                return;
+            }
+
+            int index = FindProductIndex(productId);
+
+            if (index < 0)
+            {
+                Console.WriteLine($"No product found with ID {productId}.");
+                return;
+            }
+
+            string removedName = products[index].Name;
+            products.RemoveAt(index);
+
+            Console.WriteLine($"Product \"{removedName}\" (ID: {productId}) removed successfully.");
+        }//end of RemoveProduct method
+
+        static void SearchProduct()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Search Product ========");
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products to search.");
+                return;
+            }
+
+            Console.Write("Enter search term (name or category): ");
+            string searchTerm = Console.ReadLine()?.Trim() ?? "";
+
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                Console.WriteLine("Search term cannot be blank.");
+                return;
+            }
+
+            bool foundAny = false;
+
+            string searchTermLower = searchTerm.ToLower();
+
+            Console.WriteLine();
+            Console.WriteLine($"Results for \"{searchTerm}\":");
+
+            for (int i = 0; i < products.Count; i++)
+            {
+                Product p = products[i];
+                string productNameLower = p.Name.ToLower();
+                string productCategoryLower = p.Category.ToLower();
+
+                if (productNameLower.Contains(searchTermLower) ||
+                    productCategoryLower.Contains(searchTermLower))
+                {
+                    Console.WriteLine("------------------------------");
+                    Console.WriteLine($"Product ID: {p.ProductId}");
+                    Console.WriteLine($"Name: {p.Name}");
+                    Console.WriteLine($"Category: {p.Category}");
+                    Console.WriteLine($"Price: ${p.Price}");
+                    Console.WriteLine($"Stock: {p.Stock}");
+                    foundAny = true;
+                }
+            }
+
+            if (!foundAny)
+            {
+                Console.WriteLine("No products matched your search.");
+            }
+        }//end of SearchProduct method
 
     }//end of program class
 
