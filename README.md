@@ -33,6 +33,15 @@ What I did | Ethan:
 - Added admin menu validation structure and navigation flow.
 - Helped plan the future admin authentication flow.
 - Added clear Console.WriteLine() messages to improve navigation and user understanding.
+- Created the Cart.cs class.
+- Added Cart class properties for:
+  - ProductID
+  - ProductName
+  - ProductPrice
+  - Quantity
+- Added a Cart constructor to store selected product details.
+- Added GetTotalPrice() method to calculate item total.
+- Added DisplayCartItem() method to display cart item details.
 - Worked on documenting development stages, testing, and planning decisions for the project documentation.
 
 
@@ -47,18 +56,23 @@ What I did | Ethan:
 - Admin menu structure completed
 - Registration validation and error handling started
 - Admin menu navigation and placeholder functionality completed
+- Product class added
+- Product management functions added
+- Product display completed
+- Add product completed
+- Update product completed
+- Remove product completed
+- Search product completed
+- Cart class created
+- Cart item total calculation method created
 
 
 ## Features Still To Add
 - Admin login verification
-- Product management
-- Product display system
-- Shopping cart
-- Search functionality
+- Customer menu
+- Add to cart functionality
+- View cart functionality
 - Checkout system
 - File storage / database storage
-- Admin product controls
-- Product stock updating
-- Customer menu
-- Product classes and OOP structure
-- Product searching and filtering
+- User/Admin/Customer classes
+- Cart integration with customer menu
