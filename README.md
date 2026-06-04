@@ -16,20 +16,13 @@ What I did | Ethan:
 - Helped with creation of the landing/home page in collaboration with Zach.
 - Created the do-while loop for the main menu navigation.
 - Created the RegisterScreen() method.
-- Added user registration using arrays for:
+- Added user registration using Lists for:
   - Full Name
   - Username
   - Password
 - Added registration success messages and menu return functionality.
 - Helped test and debug the registration system during development.
 - Created the AdminMenu() method structure.
-- Added placeholders for admin menu for:
-  - Display Products
-  - Add Product
-  - Update Product
-  - Remove Product
-  - Search Product
-  - Logout
 - Added admin menu validation structure and navigation flow.
 - Helped plan the future admin authentication flow.
 - Added clear Console.WriteLine() messages to improve navigation and user understanding.
@@ -42,37 +35,73 @@ What I did | Ethan:
 - Added a Cart constructor to store selected product details.
 - Added GetTotalPrice() method to calculate item total.
 - Added DisplayCartItem() method to display cart item details.
+- Created the Product.cs class.
+- Added Product class properties for:
+  - ProductID
+  - Name
+  - Category
+  - Price
+  - Stock
+- Added Product constructor.
+- Added DisplayProductDetails() method.
+- Added UpdateProductDetails() method.
+- Added an initial clothing product catalogue containing:
+  - Beanie
+  - Hoodie
+  - Shirt
+  - Long Sleeve
+  - Pants
+  - Shorts
+  - Socks
+  - Hat
+  - Dress
+  - Sweatpants/Joggers
+- Implemented product management functionality:
+  - Display Products
+  - Add Product
+  - Update Product
+  - Remove Product
+  - Search Product
+- Added product stock tracking functionality.
 - Worked on documenting development stages, testing, and planning decisions for the project documentation.
 
 
 ## Current Progress
+
 - Main menu completed
 - Registration system completed
 - Basic login system completed
 - Navigation structure completed
 - Customer login validation completed
 - Main menu input validation completed
-- Registration storage updated to allow more than 10 accounts
-- Admin menu structure completed
-- Registration validation and error handling started
-- Admin menu navigation and placeholder functionality completed
-- Product class added
-- Product management functions added
+- Registration storage updated to allow more than 10 accounts using Lists
+- Admin menu completed
+- Registration validation and error handling completed
+- Product class completed
+- Product catalogue created
 - Product display completed
 - Add product completed
 - Update product completed
 - Remove product completed
 - Search product completed
-- Cart class created
-- Cart item total calculation method created
+- Product stock tracking completed
+- Cart class completed
+- Cart item total calculation completed
+- Cart item display method completed
 
 
 ## Features Still To Add
+
 - Admin login verification
 - Customer menu
 - Add to cart functionality
 - View cart functionality
 - Checkout system
-- File storage / database storage
-- User/Admin/Customer classes
 - Cart integration with customer menu
+- Stock reduction when products are purchased
+- Order confirmation process
+- User class
+- Admin class
+- Customer class
+- Full shopping workflow testing
+- File storage / database storage (if required)

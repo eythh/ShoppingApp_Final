@@ -1,25 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ShoppingApp_Final
 {
-    internal class Product
-    {
-        public int ProductId { get; set; }
-        public string Name { get; set; } = "";
-        public string Category { get; set; } = "";
-        public decimal Price { get; set; }
-        public int Stock { get; set; }
-    }
-
     internal class Program
     {
         static List<string> userName = new List<string>(); // List to store user names
         static List<string> userPassword = new List<string>(); // List to store user passwords
         static List<string> fullName = new List<string>(); // List to store full names
 
-        static List<Product> products = new List<Product>(); // List to store products
-        static int nextProductId = 1; // Next ID to assign when adding a product
+        static List<Product> products = new List<Product>
+        {
+            new Product(1, "Beanie", "Clothing", 19.99m, 25),
+            new Product(2, "Hoodie", "Clothing", 69.99m, 15),
+            new Product(3, "Shirt", "Clothing", 34.99m, 30),
+            new Product(4, "Long Sleeve", "Clothing", 44.99m, 20),
+            new Product(5, "Pants", "Clothing", 59.99m, 18),
+            new Product(6, "Shorts", "Clothing", 39.99m, 22),
+            new Product(7, "Socks", "Clothing", 12.99m, 40),
+            new Product(8, "Hat", "Clothing", 24.99m, 25),
+            new Product(9, "Dress", "Clothing", 79.99m, 10),
+            new Product(10, "Sweatpants/Joggers", "Clothing", 64.99m, 16)
+        }; // List to store products
+
+        static int nextProductId = 11; // Next ID to assign when adding a product
 
         static int userCount = 0; // Tracks amount of registered users
         static int loggedInUserIndex = -1; // Index of logged-in user in the lists (-1 = not logged in)
@@ -158,9 +162,7 @@ namespace ShoppingApp_Final
             {
                 Console.Clear();
                 Console.WriteLine("====================================");
-                Console.WriteLine("======== Welcome, Admin! ==========");
-                Console.WriteLine("====================================");
-                Console.WriteLine("============ Admin Menu ============");
+                Console.WriteLine("==== Welcome to the Admin Menu =====");
                 Console.WriteLine("====================================");
                 Console.WriteLine("1. Display Products");
                 Console.WriteLine("2. Add Product");
@@ -302,14 +304,7 @@ namespace ShoppingApp_Final
 
             for (int i = 0; i < products.Count; i++)
             {
-                Product p = products[i];
-
-                Console.WriteLine("------------------------------");
-                Console.WriteLine($"Product ID: {p.ProductId}");
-                Console.WriteLine($"Name: {p.Name}");
-                Console.WriteLine($"Category: {p.Category}");
-                Console.WriteLine($"Price: ${p.Price}");
-                Console.WriteLine($"Stock: {p.Stock}");
+                products[i].DisplayProductDetails();
             }
         }//end of DisplayProducts method
 
@@ -354,14 +349,7 @@ namespace ShoppingApp_Final
                 return;
             }
 
-            Product newProduct = new Product
-            {
-                ProductId = nextProductId,
-                Name = name,
-                Category = category,
-                Price = price,
-                Stock = stock
-            };
+            Product newProduct = new Product(nextProductId, name, category, price, stock);
 
             products.Add(newProduct);
             nextProductId++;
@@ -451,10 +439,7 @@ namespace ShoppingApp_Final
                 updatedStock = stockCheck;
             }
 
-            product.Name = updatedName;
-            product.Category = updatedCategory;
-            product.Price = updatedPrice;
-            product.Stock = updatedStock;
+            product.UpdateProductDetails(updatedName, updatedCategory, updatedPrice, updatedStock);
 
             Console.WriteLine($"Product ID {product.ProductId} updated successfully.");
         }//end of UpdateProduct method
@@ -523,18 +508,11 @@ namespace ShoppingApp_Final
             for (int i = 0; i < products.Count; i++)
             {
                 Product p = products[i];
-                string productNameLower = p.Name.ToLower();
-                string productCategoryLower = p.Category.ToLower();
 
-                if (productNameLower.Contains(searchTermLower) ||
-                    productCategoryLower.Contains(searchTermLower))
+                if (p.Name.ToLower().Contains(searchTermLower) ||
+                    p.Category.ToLower().Contains(searchTermLower))
                 {
-                    Console.WriteLine("------------------------------");
-                    Console.WriteLine($"Product ID: {p.ProductId}");
-                    Console.WriteLine($"Name: {p.Name}");
-                    Console.WriteLine($"Category: {p.Category}");
-                    Console.WriteLine($"Price: ${p.Price}");
-                    Console.WriteLine($"Stock: {p.Stock}");
+                    p.DisplayProductDetails();
                     foundAny = true;
                 }
             }
