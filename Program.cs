@@ -5,9 +5,7 @@ namespace ShoppingApp_Final
 {
     internal class Program
     {
-        static List<string> userName = new List<string>(); // List to store user names
-        static List<string> userPassword = new List<string>(); // List to store user passwords
-        static List<string> fullName = new List<string>(); // List to store full names
+        static List<Customer> customers = new List<Customer>(); // List to store registered customers
         static string adminUsername = "admin"; // Stores the admin username
         static string adminPassword = "admin"; // Stores the admin password
 
@@ -27,7 +25,6 @@ namespace ShoppingApp_Final
 
         static int nextProductId = 11; // Next ID to assign when adding a product
 
-        static int userCount = 0; // Tracks amount of registered users
         static int loggedInUserIndex = -1; // Index of logged-in user in the lists (-1 = not logged in)
 
         static void Main(string[] args)
@@ -62,7 +59,10 @@ namespace ShoppingApp_Final
                 switch (mainChoice)
                 {
                     case 1:
-                        UserLogin(); // Calls the UserLogin method to handle user login functionality
+                        if (UserLogin()) // Opens the customer menu after a successful customer login
+                        {
+                            CustomerMenu();
+                        }
                         break;
 
                     case 2:
@@ -95,9 +95,9 @@ namespace ShoppingApp_Final
 
         static int FindRegisteredUser(string username, string password)
         {
-            for (int i = 0; i < userCount; i++)
+            for (int i = 0; i < customers.Count; i++)
             {
-                if (userName[i] == username && userPassword[i] == password)
+                if (customers[i].Username == username && customers[i].Password == password)
                 {
                     return i;
                 }
@@ -108,9 +108,9 @@ namespace ShoppingApp_Final
 
         static bool IsUsernameTaken(string username)
         {
-            for (int i = 0; i < userCount; i++)
+            for (int i = 0; i < customers.Count; i++)
             {
-                if (userName[i] == username)
+                if (customers[i].Username == username)
                 {
                     return true;
                 }
@@ -125,7 +125,7 @@ namespace ShoppingApp_Final
 
             Console.WriteLine("======== User Login ========");
 
-            if (userCount == 0)
+            if (customers.Count == 0)
             {
                 Console.WriteLine("No accounts registered yet. Please register first (option 3). Press Enter to return to the main menu.");
                 Console.ReadLine();
@@ -145,7 +145,7 @@ namespace ShoppingApp_Final
                 loggedInUserIndex = matchedIndex;
 
                 Console.WriteLine("Login successful.");
-                Console.WriteLine($"Welcome {fullName[loggedInUserIndex]} ({userName[loggedInUserIndex]})");
+                Console.WriteLine($"Welcome {customers[loggedInUserIndex].FullName} ({customers[loggedInUserIndex].Username})");
 
                 Console.ReadLine();
                 return true;
@@ -185,6 +185,79 @@ namespace ShoppingApp_Final
 
             return false;
         }//end of AdminLogin method
+
+        public static void CustomerMenu()
+        {
+            int customerChoice;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("====================================");
+                Console.WriteLine("=== Welcome to the Customer Menu ===");
+                Console.WriteLine("====================================");
+                Console.WriteLine("1. Display Products");
+                Console.WriteLine("2. Search Product");
+                Console.WriteLine("3. Add Product to Cart");
+                Console.WriteLine("4. View Cart");
+                Console.WriteLine("5. Logout");
+
+                Console.Write("Please enter your choice: ");
+
+                string customerChoiceInput = Console.ReadLine()?.Trim() ?? "";
+
+                if (!int.TryParse(customerChoiceInput, out customerChoice))
+                {
+                    Console.WriteLine("Invalid input. Please enter a number from 1 to 5.");
+                    Console.WriteLine("Press Enter to return to the Customer Menu...");
+                    Console.ReadLine();
+                    continue;
+                }
+
+                switch (customerChoice)
+                {
+                    case 1:
+                        DisplayProducts();
+                        Console.WriteLine("Press Enter to return to the Customer Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 2:
+                        SearchProduct();
+                        Console.WriteLine("Press Enter to return to the Customer Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 3:
+                        AddProductToCart();
+                        Console.WriteLine("Press Enter to return to the Customer Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 4:
+                        // ViewCart();
+                        Console.WriteLine("View Cart will be added later.");
+                        Console.WriteLine("Press Enter to return to the Customer Menu...");
+                        Console.ReadLine();
+                        break;
+
+                    case 5:
+                        loggedInUserIndex = -1;
+                        Console.WriteLine("Logging out and returning to the main menu...");
+                        Console.WriteLine("Press Enter to continue...");
+                        Console.ReadLine();
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid choice. Please choose between 1 and 5.");
+                        Console.WriteLine("Press Enter to return to the Customer Menu...");
+                        Console.ReadLine();
+                        break;
+                }
+
+            } while (customerChoice != 5);
+
+        }//end of CustomerMenu method
 
         public static void AdminMenu()
         {
@@ -295,11 +368,8 @@ namespace ShoppingApp_Final
                 return;
             }
 
-            fullName.Add(fullNameInput);
-            userName.Add(username);
-            userPassword.Add(password);
-
-            userCount++;
+            Customer newCustomer = new Customer(fullNameInput, username, password);
+            customers.Add(newCustomer);
 
             Console.Clear();
 
@@ -388,6 +458,94 @@ namespace ShoppingApp_Final
 
             Console.WriteLine($"Product added successfully (ID: {newProduct.ProductId}).");
         }//end of AddProduct method
+
+        static void AddProductToCart()
+        {
+            Console.Clear();
+            Console.WriteLine("======== Add Product to Cart ========");
+
+            if (loggedInUserIndex < 0 || loggedInUserIndex >= customers.Count)
+            {
+                Console.WriteLine("No customer is logged in.");
+                return;
+            }
+
+            if (products.Count == 0)
+            {
+                Console.WriteLine("No products are available to add to cart.");
+                return;
+            }
+
+            Console.Write("Enter Product ID to add to cart: ");
+            string idInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!int.TryParse(idInput, out int productId))
+            {
+                Console.WriteLine("Invalid product ID. Please enter a valid number.");
+                return;
+            }
+
+            int index = FindProductIndex(productId);
+
+            if (index < 0)
+            {
+                Console.WriteLine($"No product found with ID {productId}.");
+                return;
+            }
+
+            Product product = products[index];
+
+            if (product.Stock <= 0)
+            {
+                Console.WriteLine($"{product.Name} is out of stock.");
+                return;
+            }
+
+            Console.Write("Quantity: ");
+            string quantityInput = Console.ReadLine()?.Trim() ?? "";
+
+            if (!int.TryParse(quantityInput, out int quantity) || quantity <= 0)
+            {
+                Console.WriteLine("Invalid quantity. Please enter a whole number greater than 0.");
+                return;
+            }
+
+            if (quantity > product.Stock)
+            {
+                Console.WriteLine($"Not enough stock. Only {product.Stock} available.");
+                return;
+            }
+
+            Customer customer = customers[loggedInUserIndex];
+            Cart existingCartItem = null;
+
+            for (int i = 0; i < customer.CartItems.Count; i++)
+            {
+                if (customer.CartItems[i].ProductID == product.ProductId)
+                {
+                    existingCartItem = customer.CartItems[i];
+                    break;
+                }
+            }
+
+            if (existingCartItem != null && existingCartItem.Quantity + quantity > product.Stock)
+            {
+                Console.WriteLine($"Not enough stock. You already have {existingCartItem.Quantity} in your cart and only {product.Stock} are available.");
+                return;
+            }
+
+            if (existingCartItem != null)
+            {
+                existingCartItem.Quantity += quantity;
+            }
+            else
+            {
+                Cart cartItem = new Cart(product.ProductId, product.Name, product.Price, quantity);
+                customer.CartItems.Add(cartItem);
+            }
+
+            Console.WriteLine($"{quantity} {product.Name}(s) added to cart.");
+        }//end of AddProductToCart method
 
         static void UpdateProduct()
         {
