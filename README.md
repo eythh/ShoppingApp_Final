@@ -3,14 +3,79 @@
 A C# console shopping app project with a main menu, account registration, and registered-user login.
 
 What I did | Zach:
-- Created a static bool UserLogin method so that registered users can log in.
-- Used Console.Clear so each time the menu shows, the screen is cleared.
-- Added helper methods to find registered users and check whether usernames are already taken.
-- Added a csproj file so the program can be built and run with `dotnet`.
-- Added menu input validation so blank inputs, letters, and invalid numbers do not crash the program.
-- Added clear Console.WriteLine messages so users know what happened when they enter the wrong menu value.
-- Changed registration storage from fixed arrays to growable lists so signups are no longer limited to 10 accounts.
-- Removed the registration full message because new accounts can keep being added.
+- Created the UserLogin() method so registered users can sign in before using customer account features.
+- Made UserLogin() return a bool so the program can clearly tell whether a login attempt passed or failed.
+- Added a check inside UserLogin() for when no customer accounts have been registered yet.
+- Added user login input fields for:
+  - Username
+  - Password
+- Used Trim() and null handling on login inputs so extra spaces or empty console input are handled more safely.
+- Added FindRegisteredUser() to search through the registered account lists and match usernames with passwords.
+- Made FindRegisteredUser() return the matching user index when the login details are correct.
+- Made FindRegisteredUser() return -1 when no registered account matches the entered login details.
+- Added loggedInUserIndex to track which registered customer is currently logged in.
+- Updated successful customer login so it stores the matched user index and displays the customer's full name and username.
+- Updated failed customer login so loggedInUserIndex is reset to -1 and the user is told the username or password was invalid.
+- Added IsUsernameTaken() to check the username list before a new account is saved.
+- Added duplicate username validation so two accounts cannot register with the same username.
+- Added registration field validation so full name, username, and password cannot be left blank.
+- Changed registration storage from fixed arrays to growable Lists so signups are no longer limited to 10 accounts.
+- Changed customer account storage to use Customer objects instead of separate username, password, and full name lists.
+- Kept registered customers in one customers list so the login search only checks real saved accounts.
+- Removed the old registration full message because new accounts can keep being added with Lists.
+- Added main menu input validation using int.TryParse() so blank inputs, letters, and invalid menu values do not crash the program.
+- Added main menu error handling for:
+  - Non-number inputs
+  - Numbers outside the available options
+  - Returning to the main menu after an invalid choice
+- Used Console.Clear() so the main menu, login screens, registration screen, admin login screen, and admin menu display cleanly instead of stacking on top of old console text.
+- Added clear Console.WriteLine() feedback for login success, login failure, registration errors, duplicate usernames, invalid menu choices, and returning to menus.
+- Added a ShoppingApp_Final.csproj file so the project can be built and run with the dotnet command line tools.
+- Set the project file up as a console executable using:
+  - Microsoft.NET.Sdk
+  - OutputType Exe
+  - TargetFramework net8.0
+  - RootNamespace ShoppingApp_Final
+- Added the adminUsername and adminPassword variables for the admin login credentials.
+- Set the current admin credentials so the username must be `admin` and the password must also be `admin`.
+- Added the AdminLogin() method that runs before the admin menu is shown.
+- Added admin login input fields for:
+  - Username
+  - Password
+- Made AdminLogin() return true only when both admin credentials are correct.
+- Made AdminLogin() return false when the username or password is wrong.
+- Updated main menu option 2 so it calls AdminLogin() first and only opens AdminMenu() after a successful admin login.
+- Added a successful admin login message so the admin knows they are being taken into the admin menu.
+- Added an invalid admin login message that sends the user back to the main menu instead of letting them access the admin tools.
+- Protected the admin product management options behind the admin login instead of allowing direct access from the main menu.
+- Created the Customer.cs class for registered customer accounts.
+- Added Customer class properties for:
+  - FullName
+  - Username
+  - Password
+  - CartItems
+- Added a Customer constructor to store registered customer details.
+- Added a CartItems list to each Customer so every logged-in customer can have their own cart.
+- Updated RegisterScreen() so it creates a new Customer object when an account is registered.
+- Updated UserLogin() so a successful customer login opens the CustomerMenu().
+- Created the CustomerMenu() method using the same style as the AdminMenu().
+- Added customer menu validation so blank inputs, letters, and invalid customer menu numbers do not crash the program.
+- Added customer menu options for:
+  - Display Products
+  - Search Product
+  - Add Product to Cart
+  - View Cart
+  - Logout
+- Added an AddProductToCart() method so customers can choose a product and quantity to add to their cart.
+- Added add-to-cart validation for:
+  - Invalid product IDs
+  - Products that do not exist
+  - Products with no stock
+  - Invalid quantities
+  - Quantities higher than available stock
+- Made AddProductToCart() combine quantities when the same product is added to the cart more than once.
+- Left the View Cart menu option as a placeholder using `// ViewCart();` because Ethan is handling the View Cart work.
+- Kept checkout out of the customer menu because checkout will happen from inside View Cart later.
 
 What I did | Ethan:
 - Helped with creation of the landing/home page in collaboration with Zach.
@@ -88,20 +153,20 @@ What I did | Ethan:
 - Cart class completed
 - Cart item total calculation completed
 - Cart item display method completed
+- Admin login verification completed
+- Customer class completed
+- Customer menu structure completed
+- Add to cart functionality started
+- Cart integration with customer account started
 
 
 ## Features Still To Add
 
-- Admin login verification
-- Customer menu
-- Add to cart functionality
 - View cart functionality
 - Checkout system
-- Cart integration with customer menu
 - Stock reduction when products are purchased
 - Order confirmation process
 - User class
 - Admin class
-- Customer class
 - Full shopping workflow testing
 - File storage / database storage (if required)
