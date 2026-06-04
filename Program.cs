@@ -146,8 +146,6 @@ namespace ShoppingApp_Final
 
                 Console.WriteLine("Login successful.");
                 Console.WriteLine($"Welcome {customers[loggedInUserIndex].FullName} ({customers[loggedInUserIndex].Username})");
-
-                Console.ReadLine();
                 return true;
             }
 
@@ -174,8 +172,6 @@ namespace ShoppingApp_Final
             if (username == adminUsername && password == adminPassword)
             {
                 Console.WriteLine("Admin login successful.");
-                Console.WriteLine("Press Enter to continue to the Admin Menu...");
-                Console.ReadLine();
                 return true;
             }
 
@@ -235,8 +231,7 @@ namespace ShoppingApp_Final
                         break;
 
                     case 4:
-                        // ViewCart();
-                        Console.WriteLine("View Cart will be added later.");
+                        ViewCart();
                         Console.WriteLine("Press Enter to return to the Customer Menu...");
                         Console.ReadLine();
                         break;
@@ -547,6 +542,115 @@ namespace ShoppingApp_Final
             Console.WriteLine($"{quantity} {product.Name}(s) added to cart.");
         }//end of AddProductToCart method
 
+        static void ViewCart() // Displays the contents of the customer's cart, calculates the total price, and offers the option to proceed to checkout
+{
+    Console.Clear();
+    Console.WriteLine("===========================");
+    Console.WriteLine("======== View Cart ========");
+    Console.WriteLine("===========================");
+
+    if (loggedInUserIndex < 0 || loggedInUserIndex >= customers.Count) // Checks if a customer is logged in by verifying that the loggedInUserIndex is in the customers list. If not, it displays a message and returns to the Customer Menu.
+    {
+        Console.WriteLine("No customer is logged in.");
+        return;
+    } 
+
+    Customer customer = customers[loggedInUserIndex]; // Retrieves the currently logged-in customer from the customers list using the loggedInUserIndex. This lets the method access the customer's cart items and display them.
+
+    if (customer.CartItems.Count == 0)
+    {
+        Console.WriteLine("Your cart is currently empty.");
+        return;
+    }
+
+    decimal cartTotal = 0;
+
+    for (int i = 0; i < customer.CartItems.Count; i++) // Loops through each item in the customer's cart and displays its details using the DisplayCartItem method. It also calculates the total price of the cart by summing the total price of each cart item using the GetTotalPrice method.
+    {
+        customer.CartItems[i].DisplayCartItem();
+        cartTotal += customer.CartItems[i].GetTotalPrice();
+    }
+
+    Console.WriteLine("------------------------------");
+    Console.WriteLine($"Cart Total: ${cartTotal}");
+    Console.WriteLine();
+    Console.Write("Would you like to checkout? (yes/no): ");
+
+    string checkoutChoice = Console.ReadLine()?.Trim().ToLower() ?? ""; // Reads the user's input for whether they want to proceed to checkout, trims any whitespace, converts it to lowercase for easier comparison, and checks if the input is "yes" or "y". 
+
+    if (checkoutChoice == "yes" || checkoutChoice == "y")
+    {
+        Checkout();
+    }
+    else
+    {
+        Console.WriteLine("Checkout cancelled. Returning to the Customer Menu.");
+    }
+}//end of ViewCart method
+
+static void Checkout() // Checkout method that processes the customer's order, checks for stock availability, updates product stock, clears the cart, and displays confirmation message
+{
+    Console.Clear();
+    Console.WriteLine("==========================");
+    Console.WriteLine("======== Checkout ========");
+    Console.WriteLine("==========================");
+
+    if (loggedInUserIndex < 0 || loggedInUserIndex >= customers.Count) // Checks if a customer is logged in by verifying that the loggedInUserIndex is in the customers list. If not, it displays a message and returns to the Customer Menu.
+    {
+        Console.WriteLine("No customer is logged in.");
+        return;
+    }
+
+    Customer customer = customers[loggedInUserIndex]; // Retrieves the currently logged-in customer from the customers list using the loggedInUserIndex. This lets the method access the customer's cart items and process the checkout.
+
+    if (customer.CartItems.Count == 0) // Checks if the customer's cart is empty. If it is, it displays a message and returns to the Customer Menu.
+    {
+        Console.WriteLine("Your cart is empty. There is nothing to checkout.");
+        return;
+    }
+
+    decimal orderTotal = 0;
+
+    for (int i = 0; i < customer.CartItems.Count; i++) // Loops through each item in the customer's cart to check if the products are still available and if there is enough stock to fulfill the order. If any product is not available or does not have enough stock, it cancels the checkout process and returns to the Customer Menu.
+    {
+        Cart cartItem = customer.CartItems[i];
+        int productIndex = FindProductIndex(cartItem.ProductID);
+
+        if (productIndex < 0) 
+        {
+            Console.WriteLine($"Product {cartItem.ProductName} is no longer available.");
+            Console.WriteLine("Checkout cancelled.");
+            return;
+        }
+
+        Product product = products[productIndex];
+
+        if (cartItem.Quantity > product.Stock) // Checks if the quantity of the cart item exceeds the available stock of the product. If it does, it displays a message indicating that there is not enough stock, shows how many items are in the cart and how many are available, cancels the checkout process, and returns to the Customer Menu.
+        {
+            Console.WriteLine($"Not enough stock for {product.Name}.");
+            Console.WriteLine($"In cart: {cartItem.Quantity}");
+            Console.WriteLine($"Available stock: {product.Stock}");
+            Console.WriteLine("Checkout cancelled.");
+            return;
+        }
+
+        orderTotal += cartItem.GetTotalPrice();
+    }
+
+    for (int i = 0; i < customer.CartItems.Count; i++) // If all products are available and have enough stock, it loops through the cart items again to deduct the purchased quantities from the product stock. After updating the stock, it clears the customer's cart and displays a confirmation message with the order total.
+    {
+        Cart cartItem = customer.CartItems[i];
+        int productIndex = FindProductIndex(cartItem.ProductID);
+
+        products[productIndex].Stock -= cartItem.Quantity;
+    }
+
+    customer.CartItems.Clear(); // Clears the customer's cart after successfully processing the order
+
+    Console.WriteLine("Order confirmed.");
+    Console.WriteLine($"Order Total: ${orderTotal}");
+    Console.WriteLine("Thank you for your purchase.");
+}//end of Checkout method
         static void UpdateProduct()
         {
             Console.Clear();
