@@ -8,6 +8,8 @@ namespace ShoppingApp_Final
         static List<string> userName = new List<string>(); // List to store user names
         static List<string> userPassword = new List<string>(); // List to store user passwords
         static List<string> fullName = new List<string>(); // List to store full names
+        static string adminUsername = "admin"; // Stores the admin username
+        static string adminPassword = "admin"; // Stores the admin password
 
         static List<Product> products = new List<Product>
         {
@@ -64,7 +66,10 @@ namespace ShoppingApp_Final
                         break;
 
                     case 2:
-                        AdminMenu(); // Calls the AdminMenu method to display the admin menu and handle admin functionality
+                        if (AdminLogin()) // Only opens the admin menu when the admin username and password are correct
+                        {
+                            AdminMenu(); // Calls the AdminMenu method to display the admin menu and handle admin functionality
+                        }
                         break;
 
                     case 3:
@@ -153,6 +158,33 @@ namespace ShoppingApp_Final
             return false;
 
         }//end of UserLogin method
+
+        static bool AdminLogin()
+        {
+            Console.Clear();
+
+            Console.WriteLine("======== Admin Login ========");
+
+            Console.Write("Username: ");
+            string username = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
+
+            Console.Write("Password: ");
+            string password = Console.ReadLine()?.Trim() ?? ""; // Trim() removes whitespace from the beginning and end of the string
+
+            if (username == adminUsername && password == adminPassword)
+            {
+                Console.WriteLine("Admin login successful.");
+                Console.WriteLine("Press Enter to continue to the Admin Menu...");
+                Console.ReadLine();
+                return true;
+            }
+
+            Console.WriteLine("Invalid admin username or password.");
+            Console.WriteLine("Press Enter to return to the main menu...");
+            Console.ReadLine();
+
+            return false;
+        }//end of AdminLogin method
 
         public static void AdminMenu()
         {
