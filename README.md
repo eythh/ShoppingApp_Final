@@ -77,40 +77,40 @@ What I did | Zach:
 - Left the View Cart menu option as a placeholder using `// ViewCart();` because Ethan is handling the View Cart work.
 - Kept checkout out of the customer menu because checkout will happen from inside View Cart later.
 
-What I did | Ethan:
-- Helped with creation of the landing/home page in collaboration with Zach.
-- Created the do-while loop for the main menu navigation.
+## What I Did | Ethan
+
+- Worked with Zach on creating the landing/home page for the application.
+- Created the main menu navigation using a do-while loop.
 - Created the RegisterScreen() method.
-- Added user registration using Lists for:
+- Added user registration using Lists to store:
   - Full Name
   - Username
   - Password
-- Added registration success messages and menu return functionality.
-- Helped test and debug the registration system during development.
-- Created the AdminMenu() method structure.
-- Added admin menu validation structure and navigation flow.
-- Helped plan the future admin authentication flow.
-- Added clear Console.WriteLine() messages to improve navigation and user understanding.
+- Added registration success messages and functionality to return users back to the main menu.
+- Helped test and troubleshoot the registration system throughout development.
+- Created the structure for the AdminMenu() method.
+- Added admin menu validation and navigation between menu options.
+- Helped plan how the admin login and authentication system would work later in development.
+- Added clear Console.WriteLine() messages to make the application easier to navigate and understand.
 - Created the Cart.cs class.
-- Added Cart class properties for:
-  - ProductID
-  - ProductName
-  - ProductPrice
+- Added cart properties for:
+  - Product ID
+  - Product Name
+  - Product Price
   - Quantity
-- Added a Cart constructor to store selected product details.
-- Added GetTotalPrice() method to calculate item total.
-- Added DisplayCartItem() method to display cart item details.
+- Added a constructor to store cart item information.
+- Added the GetTotalPrice() method to calculate item totals.
+- Added the DisplayCartItem() method to display cart information.
 - Created the Product.cs class.
-- Added Product class properties for:
-  - ProductID
+- Added product properties for:
+  - Product ID
   - Name
   - Category
   - Price
   - Stock
-- Added Product constructor.
-- Added DisplayProductDetails() method.
-- Added UpdateProductDetails() method.
-- Added an initial clothing product catalogue containing:
+- Added a product constructor.
+- Added methods to display and update product information.
+- Created an initial clothing product catalogue including:
   - Beanie
   - Hoodie
   - Shirt
@@ -121,16 +121,27 @@ What I did | Ethan:
   - Hat
   - Dress
   - Sweatpants/Joggers
-- Implemented product management functionality:
+- Implemented the main product management features:
   - Display Products
   - Add Product
   - Update Product
   - Remove Product
   - Search Product
-- Added product stock tracking functionality.
-- Worked on documenting development stages, testing, and planning decisions for the project documentation.
-
-
+- Added stock tracking functionality for products.
+- Connected the Customer Menu "View Cart" option to the ViewCart() method.
+- Created the ViewCart() method to display the logged-in customer's cart items.
+- Used methods from the Cart.cs class to display product information, quantities, and item totals.
+- Added cart total calculations inside the cart view.
+- Added a checkout prompt so customers can review their cart before completing an order.
+- Created the Checkout() method to process customer purchases.
+- Added validation to ensure customers are logged in and that their cart is not empty before checkout.
+- Added stock checks during checkout to prevent customers from purchasing more items than are available.
+- Reduced product stock levels after successful purchases.
+- Cleared the customer's cart once an order was completed.
+- Added an order confirmation message and final order total.
+- Improved the overall flow of the application by removing unnecessary pause screens after successful user and admin logins.
+- Helped document development progress, testing results, and planning decisions throughout the project.
+  
 ## Current Progress
 
 - Main menu completed
