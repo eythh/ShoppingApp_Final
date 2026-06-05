@@ -173,11 +173,7 @@ What I did | Zach:
 
 ## Features Still To Add
 
-- View cart functionality
-- Checkout system
-- Stock reduction when products are purchased
-- Order confirmation process
-- User class
-- Admin class
-- Full shopping workflow testing
-- File storage / database storage (if required)
+- Final bug fixes and usability improvements
+- Final screenshots for evidence
+- Final documentation and testing records
+- Final merge and project submission
