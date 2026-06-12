@@ -2,14 +2,6 @@
 
 A C# console shopping app with customer accounts, admin login, product management, carts, and checkout.
 
-## How to Run
-
-From the project folder, run:
-
-```bash
-dotnet run
-```
-
 Admin login details:
 - Username: `admin`
 - Password: `admin`
